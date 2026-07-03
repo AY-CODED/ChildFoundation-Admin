@@ -33,28 +33,18 @@ const SideBar = () => {
       <nav>
         <ul style={{ listStyle: 'none', padding: 0 }}>
           <li style={{ marginBottom: '20px' }}>
-            <Link to="/" style={isActive('/') ? activeMenuItemStyle : inactiveMenuItemStyle}>
-              Dashboard
+            <Link to="/Home" style={isActive('/Home') ? activeMenuItemStyle : inactiveMenuItemStyle}>
+              Overview
             </Link>
           </li>
           <li style={{ marginBottom: '20px' }}>
-            <Link to="/beneficiaries" style={isActive('/beneficiaries') ? activeMenuItemStyle : inactiveMenuItemStyle}>
-              Beneficiaries
+            <Link to="/ImageManagement" style={isActive('/ImageManagement') ? activeMenuItemStyle : inactiveMenuItemStyle}>
+              Image Management
             </Link>
           </li>
           <li style={{ marginBottom: '20px' }}>
-            <Link to="/donations" style={isActive('/donations') ? activeMenuItemStyle : inactiveMenuItemStyle}>
-              Donations
-            </Link>
-          </li>
-          <li style={{ marginBottom: '20px' }}>
-            <Link to="/programs" style={isActive('/programs') ? activeMenuItemStyle : inactiveMenuItemStyle}>
-              Programs
-            </Link>
-          </li>
-          <li style={{ marginBottom: '20px' }}>
-            <Link to="/gallery" style={isActive('/gallery') ? activeMenuItemStyle : inactiveMenuItemStyle}>
-              Gallery
+            <Link to="/User" style={isActive('/User') ? activeMenuItemStyle : inactiveMenuItemStyle}>
+              User Directory
             </Link>
           </li>
           <li style={{ marginBottom: '20px' }}>
