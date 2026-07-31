@@ -1,5 +1,6 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+// 1. Import the Users icon (it is already in your import list)
 import { LayoutDashboard, FileText, Wallet, Users, Mail, LogOut } from 'lucide-react';
 
 export default function DashboardLayout() {
@@ -8,9 +9,12 @@ export default function DashboardLayout() {
 
   const navItems = [
     { name: 'Overview', path: '/', icon: LayoutDashboard },
-    { name: 'CMS', path: '/cms', icon: FileText },
-    { name: 'Ledger', path: '/ledger', icon: Wallet },
-    { name: 'Beneficiaries', path: '/beneficiaries', icon: Users },
+    // { name: 'CMS', path: '/cms', icon: FileText },
+    // { name: 'Ledger', path: '/ledger', icon: Wallet },
+    // { name: 'Beneficiaries', path: '/beneficiaries', icon: Users },
+    // 2. Add the 'Registered Users' link here
+    { name: 'Image Upload', path: '/ImageUpload', icon: FileText }, // Add the Image Upload link
+    { name: 'Registered Users', path: '/users', icon: Users }, 
     { name: 'Broadcast', path: '/broadcast', icon: Mail },
   ];
 

@@ -1,27 +1,62 @@
-import { useState } from 'react';
-import { Loader2, Send } from 'lucide-react';
-import api from '../services/api';
+import { useState } from "react";
+import { Loader2, Send } from "lucide-react";
+import api from "../services/api";
 
 export default function Broadcast() {
-  const [emailData, setEmailData] = useState({ subject: '', body: '' });
+  const [emailData, setEmailData] = useState({
+    subject: "",
+    message: "",
+  });
+
   const [sending, setSending] = useState(false);
-  const [message, setMessage] = useState({ type: '', text: '' });
+
+  const [feedback, setFeedback] = useState({
+    type: "",
+    text: "",
+  });
 
   const sendBroadcast = async () => {
-    if (!emailData.subject || !emailData.body) {
-      setMessage({ type: 'error', text: 'Subject and body are required.' });
+    if (!emailData.subject.trim() || !emailData.message.trim()) {
+      setFeedback({
+        type: "error",
+        text: "Subject and message are required.",
+      });
       return;
     }
 
     setSending(true);
-    setMessage({ type: '', text: '' });
+    setFeedback({
+      type: "",
+      text: "",
+    });
 
     try {
-      await api.post('/broadcast', emailData);
-      setMessage({ type: 'success', text: 'Newsletter sent successfully!' });
-      setEmailData({ subject: '', body: '' });
+      await api.post("/email/broadcast", {
+        subject: emailData.subject,
+        message: emailData.message,
+      });
+
+      setFeedback({
+        type: "success",
+        text: "Broadcast email sent successfully!",
+      });
+
+      setEmailData({
+        subject: "",
+        message: "",
+      });
     } catch (err) {
-      setMessage({ type: 'error', text: 'Failed to send newsletter.' });
+      console.error(err);
+
+      const errorMessage =
+        err.response?.data?.message ||
+        err.response?.data ||
+        "Failed to send broadcast email.";
+
+      setFeedback({
+        type: "error",
+        text: errorMessage,
+      });
     } finally {
       setSending(false);
     }
@@ -29,67 +64,84 @@ export default function Broadcast() {
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-6">
-      <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-md p-8">
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">Email Broadcast</h2>
-        <p className="text-gray-600 mb-8">
-          Send newsletters to all subscribers with ease.
+      <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-8">
+
+        <h1 className="text-3xl font-bold text-gray-900">
+          Email Broadcast
+        </h1>
+
+        <p className="text-gray-600 mt-2 mb-8">
+          Send an email to every registered user except the admin account.
         </p>
 
-        {/* Subject */}
         <div className="mb-6">
-          <label className="block font-semibold text-gray-700 mb-2">Subject</label>
+          <label className="block mb-2 font-semibold">
+            Subject
+          </label>
+
           <input
             type="text"
-            placeholder="Enter subject..."
             value={emailData.subject}
-            onChange={e => setEmailData({ ...emailData, subject: e.target.value })}
-            className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-purple-400 focus:border-purple-500 outline-none transition"
+            onChange={(e) =>
+              setEmailData({
+                ...emailData,
+                subject: e.target.value,
+              })
+            }
+            placeholder="Enter email subject..."
+            className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500"
           />
         </div>
 
-        {/* Body */}
         <div className="mb-6">
-          <label className="block font-semibold text-gray-700 mb-2">Newsletter Body</label>
+          <label className="block mb-2 font-semibold">
+            Message
+          </label>
+
           <textarea
-            rows="8"
-            placeholder="Write your newsletter content..."
-            value={emailData.body}
-            onChange={e => setEmailData({ ...emailData, body: e.target.value })}
-            className="w-full rounded-lg border border-gray-300 px-4 py-3 resize-none focus:ring-2 focus:ring-purple-400 focus:border-purple-500 outline-none transition"
+            rows={8}
+            value={emailData.message}
+            onChange={(e) =>
+              setEmailData({
+                ...emailData,
+                message: e.target.value,
+              })
+            }
+            placeholder="Write your message..."
+            className="w-full border rounded-lg px-4 py-3 resize-none focus:outline-none focus:ring-2 focus:ring-purple-500"
           />
         </div>
 
-        {/* Feedback */}
-        {message.text && (
+        {feedback.text && (
           <div
-            className={`mb-6 p-3 rounded-lg text-sm font-medium ${
-              message.type === 'success'
-                ? 'bg-green-100 text-green-700'
-                : 'bg-red-100 text-red-700'
+            className={`mb-6 rounded-lg p-4 ${
+              feedback.type === "success"
+                ? "bg-green-100 text-green-700"
+                : "bg-red-100 text-red-700"
             }`}
           >
-            {message.text}
+            {feedback.text}
           </div>
         )}
 
-        {/* Button */}
         <button
           onClick={sendBroadcast}
           disabled={sending}
-          className="w-full bg-purple-600 hover:bg-purple-700 transition text-white py-4 rounded-lg font-bold text-lg shadow-md flex justify-center items-center gap-3"
+          className="w-full bg-purple-600 hover:bg-purple-700 disabled:bg-purple-400 text-white py-4 rounded-lg font-bold flex items-center justify-center gap-3 transition"
         >
           {sending ? (
             <>
-              <Loader2 className="animate-spin" />
+              <Loader2 className="animate-spin" size={20} />
               Sending...
             </>
           ) : (
             <>
               <Send size={20} />
-              Send to All
+              Send Broadcast
             </>
           )}
         </button>
+
       </div>
     </div>
   );

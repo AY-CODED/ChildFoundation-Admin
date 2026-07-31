@@ -10,6 +10,8 @@ import Beneficiaries from './pages/Beneficiaries';
 import Broadcast from './pages/Broadcast';
 import AddBeneficiary from './pages/AddBeneficiary';
 import Gallery from './pages/Gallery';
+import Users from './pages/Users'; // Import the Users page
+import ImageUpload from './pages/ImageUpload'; // Import the ImageUpload page
 
 // Updated ProtectedRoute to respect the loading state
 const ProtectedRoute = ({ children }) => {
@@ -41,6 +43,8 @@ function AppRoutes() {
                 <Route path="broadcast" element={<Broadcast />} />
                 <Route path="add-beneficiary" element={<AddBeneficiary />} />
                 <Route path="gallery" element={<Gallery />} />
+                <Route path="users" element={<Users />} /> {/* Add the Users route */}
+                <Route path="ImageUpload" element={<ImageUpload />} /> {/* Add the ImageUpload route */}
             </Route>
         </Routes>
     );
