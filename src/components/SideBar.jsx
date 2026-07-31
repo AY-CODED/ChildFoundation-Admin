@@ -42,11 +42,11 @@ const SideBar = () => {
               Image Management
             </Link>
           </li>
-          <li style={{ marginBottom: '20px' }}>
+          {/* <li style={{ marginBottom: '20px' }}>
             <Link to="/User" style={isActive('/User') ? activeMenuItemStyle : inactiveMenuItemStyle}>
               User Directory
             </Link>
-          </li>
+          </li> */}
           <li style={{ marginBottom: '20px' }}>
             <Link to="/settings" style={isActive('/settings') ? activeMenuItemStyle : inactiveMenuItemStyle}>
               Settings
