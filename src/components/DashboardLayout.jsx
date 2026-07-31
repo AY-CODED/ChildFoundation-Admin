@@ -14,7 +14,7 @@ export default function DashboardLayout() {
     // { name: 'Beneficiaries', path: '/beneficiaries', icon: Users },
     // 2. Add the 'Registered Users' link here
     { name: 'Image Upload', path: '/ImageUpload', icon: FileText }, // Add the Image Upload link
-    { name: 'Registered Users', path: '/users', icon: Users }, 
+    // { name: 'Registered Users', path: '/users', icon: Users }, 
     { name: 'Broadcast', path: '/broadcast', icon: Mail },
   ];
 
