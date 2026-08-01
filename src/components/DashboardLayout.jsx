@@ -1,32 +1,50 @@
+import React, { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-// 1. Import the Users icon (it is already in your import list)
-import { LayoutDashboard, FileText, Wallet, Users, Mail, LogOut } from 'lucide-react';
+import { LayoutDashboard, FileText, Wallet, Users, Mail, LogOut, Menu, X } from 'lucide-react';
 
 export default function DashboardLayout() {
   const { logout } = useAuth();
   const location = useLocation();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const navItems = [
     { name: 'Overview', path: '/', icon: LayoutDashboard },
     // { name: 'CMS', path: '/cms', icon: FileText },
     // { name: 'Ledger', path: '/ledger', icon: Wallet },
     // { name: 'Beneficiaries', path: '/beneficiaries', icon: Users },
-    // 2. Add the 'Registered Users' link here
-    { name: 'Image Upload', path: '/ImageUpload', icon: FileText }, // Add the Image Upload link
+    { name: 'Image Upload', path: '/ImageUpload', icon: FileText }, 
     // { name: 'Registered Users', path: '/users', icon: Users }, 
     { name: 'Broadcast', path: '/broadcast', icon: Mail },
   ];
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-gray-50 overflow-hidden">
+      {/* Mobile sidebar backdrop */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 z-40 bg-black/50 md:hidden transition-opacity"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className="w-64 flex flex-col bg-white border-r shadow-sm">
+      <aside 
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r shadow-sm flex flex-col transform transition-transform duration-300 ease-in-out md:relative md:translate-x-0 ${
+          isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
         {/* Logo */}
-        <div className="p-6 border-b">
+        <div className="flex items-center justify-between p-6 border-b">
           <h1 className="text-2xl font-extrabold text-blue-700 tracking-tight">
             YMCH Admin
           </h1>
+          <button 
+            onClick={() => setIsSidebarOpen(false)}
+            className="md:hidden p-2 text-gray-500 hover:bg-gray-100 rounded-lg"
+          >
+            <X className="w-6 h-6" />
+          </button>
         </div>
 
         {/* Navigation */}
@@ -38,6 +56,7 @@ export default function DashboardLayout() {
               <Link
                 key={item.name}
                 to={item.path}
+                onClick={() => setIsSidebarOpen(false)}
                 className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
                   isActive
                     ? 'bg-blue-100 text-blue-700 font-semibold shadow-sm'
@@ -63,12 +82,26 @@ export default function DashboardLayout() {
         </div>
       </aside>
 
-      {/* Main Content */}
-      <main className="flex-1 overflow-y-auto">
-        <div className="p-8">
-          <Outlet />
-        </div>
-      </main>
+      {/* Main Layout Area */}
+      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
+        {/* Mobile Header */}
+        <header className="md:hidden flex items-center justify-between p-4 bg-white border-b shadow-sm shrink-0">
+          <h1 className="text-xl font-bold text-blue-700 tracking-tight">YMCH Admin</h1>
+          <button 
+            onClick={() => setIsSidebarOpen(true)}
+            className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+          >
+            <Menu className="w-6 h-6" />
+          </button>
+        </header>
+
+        {/* Main Content */}
+        <main className="flex-1 overflow-y-auto">
+          <div className="p-4 md:p-8">
+            <Outlet />
+          </div>
+        </main>
+      </div>
     </div>
   );
 }
